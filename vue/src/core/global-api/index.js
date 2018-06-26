@@ -52,6 +52,17 @@ export function initGlobalAPI (Vue: GlobalAPI) {
   // this is used to identify the "base" constructor to extend all plain-object
   // components with in Weex's multi-instance scenarios.
   Vue.options._base = Vue
+  /**
+   * 到这里Vue.options已经变成了
+   * Vue.options = {
+      _base: Vue,
+      components: {
+        KeepAlive,
+      },
+      directives: Object.create(null),
+      filters: Object.create(null),
+    };
+   */
 
   extend(Vue.options.components, builtInComponents)
 
