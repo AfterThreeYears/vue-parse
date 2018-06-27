@@ -5,7 +5,9 @@ import router from './router'
 import store from './store'
 
 Vue.config.productionTip = false
-Vue.component('test', Test);
+Vue.config.performance = true
+Vue.component('test', Test)
+console.log(Vue.config.optionMergeStrategies);
 
 new Vue({
   // router,

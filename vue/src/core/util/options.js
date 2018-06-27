@@ -30,6 +30,10 @@ const strats = config.optionMergeStrategies
 /**
  * Options with restrictions
  */
+/**
+ * 通过Vue.component('test', Test) 注册的组件是没有vm选项的
+ * 所以这些组件上面没有el, propsData属性
+ */
 if (process.env.NODE_ENV !== 'production') {
   strats.el = strats.propsData = function (parent, child, vm, key) {
     if (!vm) {
@@ -132,6 +136,17 @@ strats.data = function (
 /**
  * Hooks and props are merged as arrays.
  */
+/**
+ * 生命周期的合并规则
+ * 如果有childVal
+ * ? 如果parentVal
+ *   ? 那么把parentVal childVal进行concat，（所以看出来执行的顺序是先父级然后子级）
+ *   : 如果childVal是数组
+ *     ? 不做处理
+ *     : 包裹成数组
+ *  没有childVal直接返回parentVal
+ *  从这里可以知道每个生命周期的函数不仅可以写成function, 还可以是一个function组成的数组
+ */
 function mergeHook (
   parentVal: ?Array<Function>,
   childVal: ?Function | ?Array<Function>
@@ -155,6 +170,20 @@ LIFECYCLE_HOOKS.forEach(hook => {
  * When a vm is present (instance creation), we need to do
  * a three-way merge between constructor options, instance
  * options and parent options.
+ */
+/**
+ * component, directive, filter合并方式是
+ * 把parentVal作为原型，如果有childVal的话继承parentVal
+ * 结果类似成
+ * {
+ *  ... 这个是childVal的属性
+ *  __proto__: {
+ *    components: {...},
+ *    directives: {...},
+ *    filters: {...},
+ *    ...
+ *  }
+ * }
  */
 function mergeAssets (
   parentVal: ?Object,
@@ -348,6 +377,7 @@ function normalizeDirectives (options: Object) {
   }
 }
 
+// 进行对象检验，属性需要是对象
 function assertObjectType (name: string, value: any, vm: ?Component) {
   if (!isPlainObject(value)) {
     warn(
@@ -361,6 +391,9 @@ function assertObjectType (name: string, value: any, vm: ?Component) {
 /**
  * Merge two option objects into a new one.
  * Core utility used in both instantiation and inheritance.
+ */
+/**
+ * 每一个组件的components， directives， filters会通过合并从Vue上合并过去
  */
 export function mergeOptions (
   parent: Object,

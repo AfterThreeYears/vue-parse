@@ -4,21 +4,27 @@
       <!-- <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link> -->
       abc
-      <test />  
+      <main-header :node-value="value"></main-header> 
     </div>
     <!-- <router-view/> -->
   </div>
 </template>
 <script>
-import Test from './Test.vue';
+import MainHeader from './Test.vue';
   export default {
     components: {
-      Test,
+      MainHeader,
     },
-    mounted() {
-      console.log(this);
-      debugger;
-    }
+    data() {
+      return {
+        value: 'test',
+      };
+    },
+    mounted: [function() {
+      console.log(1);
+    }, function () {
+      console.log(2);
+    }]
   }
 </script>
 <style>

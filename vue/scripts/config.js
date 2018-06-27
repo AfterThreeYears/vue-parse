@@ -63,6 +63,7 @@ const builds = {
     entry: resolve('web/entry-runtime-with-compiler.js'),
     dest: resolve('dist/vue.esm.js'),
     format: 'es',
+    env: 'development',
     alias: { he: './entity-decoder' },
     banner
   },
@@ -204,7 +205,7 @@ function genConfig (name) {
 
   return config
 }
-
+console.log(process.env.NODE_ENV)
 if (process.env.TARGET) {
   module.exports = genConfig(process.env.TARGET)
 } else {
