@@ -21,9 +21,10 @@ import MainHeader from './Test.vue';
       };
     },
     mounted: [function() {
-      console.log(1);
+      console.log('this.app', this.$store);
     }, function () {
       console.log(2);
+      console.log(this.$options.axios);
     }]
   }
 </script>

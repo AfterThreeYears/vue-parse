@@ -49,6 +49,25 @@ if (process.env.NODE_ENV !== 'production') {
 /**
  * Helper that recursively merges two data objects together.
  */
+/**
+ * 进行递归合并
+ * a: {
+ *  obj: {
+ *    name: 1
+ *  }
+ * }
+ * b: {
+ *  obj: {
+ *    name: 1
+ *  }
+ * }
+ * c: {
+ *  obj: {
+ *    age: 1
+ *    name: 1
+ *  }
+ * }
+ */
 function mergeData (to: Object, from: ?Object): Object {
   if (!from) return to
   let key, toVal, fromVal
@@ -68,6 +87,11 @@ function mergeData (to: Object, from: ?Object): Object {
 
 /**
  * Data
+ */
+/**
+ * 如果childVal没有，使用parentVal
+ * 如果parentVal没有，使用childVal
+ * 否则进行merge，调用mergeData函数
  */
 export function mergeDataOrFn (
   parentVal: any,
@@ -117,6 +141,7 @@ strats.data = function (
   vm?: Component
 ): ?Function {
   if (!vm) {
+    // 如果data不是function，那么直接返回parentVal
     if (childVal && typeof childVal !== 'function') {
       process.env.NODE_ENV !== 'production' && warn(
         'The "data" option should be a function ' +
@@ -141,10 +166,10 @@ strats.data = function (
  * 如果有childVal
  * ? 如果parentVal
  *   ? 那么把parentVal childVal进行concat，（所以看出来执行的顺序是先父级然后子级）
- *   : 如果childVal是数组
- *     ? 不做处理
- *     : 包裹成数组
- *  没有childVal直接返回parentVal
+ *   : 如果没有parentVal 判断childVal是不是数组
+ *     ? childVal不做处理
+ *     : childVal包裹成数组
+ * : 没有childVal直接返回parentVal
  *  从这里可以知道每个生命周期的函数不仅可以写成function, 还可以是一个function组成的数组
  */
 function mergeHook (
@@ -299,7 +324,14 @@ export function validateComponentName (name: string) {
 
 /**
  * Ensure all props option syntax are normalized into the
- * Object-based format.
+ * Object-based format
+ * 格式化props字段
+ * 统一格式为
+ * {
+ *  propA: {
+ *    type: XXXX,
+ *  }
+ * }
  */
 function normalizeProps (options: Object, vm: ?Component) {
   const props = options.props
@@ -337,6 +369,12 @@ function normalizeProps (options: Object, vm: ?Component) {
 
 /**
  * Normalize all injections into Object-based format
+ * 格式化inject
+ * {
+ *   injectA: {
+ *     { from: key }, val
+ *   }
+ * }
  */
 function normalizeInject (options: Object, vm: ?Component) {
   const inject = options.inject
@@ -364,6 +402,13 @@ function normalizeInject (options: Object, vm: ?Component) {
 
 /**
  * Normalize raw function directives into object format.
+ * 格式化directives
+ * {
+ *   directiveA: {
+ *     bind: fn,
+ *     update: fn
+ *   }
+ * }
  */
 function normalizeDirectives (options: Object) {
   const dirs = options.directives
@@ -377,7 +422,7 @@ function normalizeDirectives (options: Object) {
   }
 }
 
-// 进行对象检验，属性需要是对象
+// 进行对象检验，属性必须是对象
 function assertObjectType (name: string, value: any, vm: ?Component) {
   if (!isPlainObject(value)) {
     warn(
@@ -393,7 +438,8 @@ function assertObjectType (name: string, value: any, vm: ?Component) {
  * Core utility used in both instantiation and inheritance.
  */
 /**
- * 每一个组件的components， directives， filters会通过合并从Vue上合并过去
+ * 1.每一个组件的components， directives， filters会通过合并从Vue上合并过去
+ * 2.只有通过new Vue才会有vm，通过extend都是没有vm的
  */
 export function mergeOptions (
   parent: Object,

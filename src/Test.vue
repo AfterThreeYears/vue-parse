@@ -6,7 +6,6 @@
 
 <script>
   export default {
-    el: '#app',
     props: {
       'node-value': {
         type: String,
@@ -20,7 +19,8 @@
       };
     },
     mounted() {
-
+      console.log('this is test', this);
+      console.log(this.$options.render);
     }
   };
 </script>
