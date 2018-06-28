@@ -17,7 +17,7 @@ import MainHeader from './Test.vue';
     },
     data() {
       return {
-        value: 'test',
+        value: undefined,
       };
     },
     mounted: [function() {

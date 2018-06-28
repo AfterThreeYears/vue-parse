@@ -18,6 +18,7 @@ type PropOptions = {
   validator: ?Function
 };
 
+// prop不是required 并且是undefined的话会把默认值赋值给当前值进行类型检查
 export function validateProp (
   key: string,
   propOptions: Object,
@@ -25,6 +26,7 @@ export function validateProp (
   vm?: Component
 ): any {
   const prop = propOptions[key]
+  // 是否存在对象的属性 并且不在原型上
   const absent = !hasOwn(propsData, key)
   let value = propsData[key]
   // boolean casting
@@ -63,6 +65,10 @@ export function validateProp (
 
 /**
  * Get the default value of a prop.
+ * 1.有默认值的话，把默认值赋值给当前值
+ * 2.检查默认值的对象或者数组的话，警告⚠️
+ * 3. ???
+ * 4. 如果类型不是function 并且默认值是function，执行函数，返回值进行赋值给当前值
  */
 function getPropDefaultValue (vm: ?Component, prop: PropOptions, key: string): any {
   // no default, return undefined
@@ -96,6 +102,9 @@ function getPropDefaultValue (vm: ?Component, prop: PropOptions, key: string): a
 
 /**
  * Assert whether a prop is valid.
+ * 如果props是required但是没有，报错
+ * 如果props是null或者undefined 并且不是required，不做处理
+ * 有自定义验证器的话 根据验证结果决定是否pass
  */
 function assertProp (
   prop: PropOptions,
@@ -117,16 +126,27 @@ function assertProp (
   let type = prop.type
   let valid = !type || type === true
   const expectedTypes = []
+  /**
+   * 对prop进行序列化
+   * propA: {
+   *   type: String,
+   * }
+   * propA: {
+   *   type: [String],
+   * }
+   */
   if (type) {
     if (!Array.isArray(type)) {
       type = [type]
     }
+    // 如果有一个类型验证通过就不用验证后面的了
     for (let i = 0; i < type.length && !valid; i++) {
       const assertedType = assertType(value, type[i])
       expectedTypes.push(assertedType.expectedType || '')
       valid = assertedType.valid
     }
   }
+  // 所有验证都没通过的话
   if (!valid) {
     warn(
       `Invalid prop: type check failed for prop "${name}".` +
@@ -156,9 +176,20 @@ function assertType (value: any, type: Function): {
   let valid
   const expectedType = getType(type)
   if (simpleCheckRE.test(expectedType)) {
+    // 实际传入值的type
     const t = typeof value
+    // 把实际传入值的type和期望的type进行对比
     valid = t === expectedType.toLowerCase()
     // for primitive wrapper objects
+    /**
+     * 对于以下情况
+     * propA: {
+     *   type: String
+     * }
+     * 传入的是
+     * propA: new String(1),
+     * 需要进一步的检查
+     */
     if (!valid && t === 'object') {
       valid = value instanceof type
     }
