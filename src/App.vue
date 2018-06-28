@@ -4,7 +4,9 @@
       <!-- <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link> -->
       abc
-      <main-header :node-value="value"></main-header> 
+      <main-header
+        :node-value="value"
+      />
     </div>
     <!-- <router-view/> -->
   </div>
@@ -20,12 +22,6 @@ import MainHeader from './Test.vue';
         value: undefined,
       };
     },
-    mounted: [function() {
-      console.log('this.app', this.$store);
-    }, function () {
-      console.log(2);
-      console.log(this.$options.axios);
-    }]
   }
 </script>
 <style>

@@ -8,7 +8,6 @@ Vue.config.productionTip = false
 Vue.config.performance = true
 
 const vm = new Vue({
-  axios() {console.log('i am axios')},
   // router,
   data() {
     return {
@@ -17,9 +16,8 @@ const vm = new Vue({
   },
   store,
   render: h => h(App),
-  mounted() {
-    this.$options.axios()
-  },
 }).$mount('#app')
 
-console.log('this is vm', vm);
+
+
+

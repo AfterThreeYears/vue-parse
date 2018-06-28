@@ -61,6 +61,10 @@ export function initState (vm: Component) {
   }
 }
 
+/**
+ * 1.检查类型props
+ * 2.对porps进行响应式观察，
+ */
 function initProps (vm: Component, propsOptions: Object) {
   const propsData = vm.$options.propsData || {}
   const props = vm._props = {}
@@ -109,6 +113,13 @@ function initProps (vm: Component, propsOptions: Object) {
   toggleObserving(true)
 }
 
+/**
+ * 1. 判断data是function或者objetc并且相应的处理
+ * 2. 判断data不是object，⚠️警告一下
+ * 3. 属性重名时候的优先级 porps -> data -> methods
+ * 4. 把data和props里面的属性对比一下，重复的警告⚠️ props优先级高
+ * 5. 通过proxy 把data里开头不是_ $的属性挂载到vm，譬如vm.a, 其实是vm._data[a]
+ */
 function initData (vm: Component) {
   let data = vm.$options.data
   data = vm._data = typeof data === 'function'
@@ -250,6 +261,11 @@ function createComputedGetter (key) {
   }
 }
 
+/**
+ * 开发环境进行
+ * 非空检查
+ * 命名重复检查
+ */
 function initMethods (vm: Component, methods: Object) {
   const props = vm.$options.props
   for (const key in methods) {
@@ -277,7 +293,20 @@ function initMethods (vm: Component, methods: Object) {
     vm[key] = methods[key] == null ? noop : bind(methods[key], vm)
   }
 }
-
+/**
+ * watch: {
+ *   a: [function() {}, function() {}],
+ *   b: function() {},
+ *   c: {
+ *      deep: true,
+ *      handle: function() {},
+ *   },
+ *   d: 'handleChange',
+ * },
+ * methods: {
+ *   handleChange() {},
+ * }
+ */
 function initWatch (vm: Component, watch: Object) {
   for (const key in watch) {
     const handler = watch[key]

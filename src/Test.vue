@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div @click="handleClick">
     i am {{nodeValue}}
   </div>
 </template>
@@ -16,11 +16,19 @@
     data() {
       return {
         a: 1,
+        _a: 2,
+        '$a': 3,
       };
     },
     mounted() {
-      console.log('this is test', this);
-      console.log(this.$options.render);
+      console.log('this is test', this.a);
+    },
+    methods: {
+      handleClick() {
+        console.log(this.a);
+        console.log(this._a);
+        console.log(this.$a);
+      }
     }
   };
 </script>
