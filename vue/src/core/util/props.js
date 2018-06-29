@@ -43,6 +43,7 @@ export function validateProp (
       }
     }
   }
+
   // check default value
   if (value === undefined) {
     value = getPropDefaultValue(vm, prop, key)
@@ -65,7 +66,7 @@ export function validateProp (
 
 /**
  * Get the default value of a prop.
- * 1.有默认值的话，把默认值赋值给当前值
+ * 1.有默认值并且当前用户没有传入prop，或者用户传入了undefined, 把默认值赋值给当前值
  * 2.检查默认值的对象或者数组的话，警告⚠️
  * 3. ???
  * 4. 如果类型不是function 并且默认值是function，执行函数，返回值进行赋值给当前值
@@ -102,7 +103,8 @@ function getPropDefaultValue (vm: ?Component, prop: PropOptions, key: string): a
 
 /**
  * Assert whether a prop is valid.
- * 如果props是required但是没有，报错
+ * 如果props是required并且有默认设置，用户不传参的情况下会把默认设置拿来使用，但是开发环境下会有一个警告⚠️
+ * 但是如果用户进行了传参，参数是undefined，那么不会有警告⚠️
  * 如果props是null或者undefined 并且不是required，不做处理
  * 有自定义验证器的话 根据验证结果决定是否pass
  */
