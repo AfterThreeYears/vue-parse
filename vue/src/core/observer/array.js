@@ -3,6 +3,20 @@
  * dynamically accessing methods on Array prototype
  */
 
+/**
+ * 因为有些数组的有些方法会改变自身
+ * 需要对这些方法进行拦截处理
+ * var foo = function() {
+ *  console.log('我是原本的函数')
+ * }
+ * var wrapFoo = foo;
+ * foo = function() {
+ *   wrapFoo();
+ *   console.log('我是新foo')
+ * }
+ * 这个文件会把所有会改变数组自身的方法进行了处理，并且重新赋值给用户的array对象的__proto__
+ */
+
 import { def } from '../util/index'
 
 const arrayProto = Array.prototype
@@ -37,6 +51,7 @@ methodsToPatch.forEach(function (method) {
         inserted = args.slice(2)
         break
     }
+    // 对于新增的元素 需要进行观察
     if (inserted) ob.observeArray(inserted)
     // notify change
     ob.dep.notify()

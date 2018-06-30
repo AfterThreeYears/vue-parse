@@ -9,10 +9,10 @@ Vue.config.performance = true
 
 const vm = new Vue({
   // router,
-  data() {
-    return {
-      index: 1,
-    };
+  data: {
+    main: {
+      isVue: 1,
+    },
   },
   store,
   render: h => h(App),

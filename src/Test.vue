@@ -1,6 +1,6 @@
 <template>
   <div @click="handleClick">
-    i am {{nodeValue}}
+    {{$root._data}}
   </div>
 </template>
 
@@ -18,16 +18,27 @@
         a: 1,
         _a: 2,
         '$a': 3,
+        obj: {
+          name: 'wbb',
+        },
+        arr: [
+          {
+            a: 1
+          }
+        ],
       };
     },
     mounted() {
-      console.log('this is test', this.a);
+      console.log('this is test', this);
     },
     methods: {
       handleClick() {
         console.log(this.a);
         console.log(this._a);
         console.log(this.$a);
+        // this.obj.name1 = 1;
+        this.$set(this.$root, 'six', 11)
+        console.log(this.arr);  
       }
     }
   };

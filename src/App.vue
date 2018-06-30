@@ -22,6 +22,9 @@ import MainHeader from './Test.vue';
         value: undefined,
       };
     },
+    mounted() {
+      this.$set(this._data, 'value1', '666');
+    }
   }
 </script>
 <style>
