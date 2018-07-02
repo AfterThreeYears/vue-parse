@@ -127,6 +127,7 @@ export default class Watcher {
 
   /**
    * Add a dependency to this directive.
+   * 对于每一个重复的Dep进行去重，否则会触发多次重复的依赖
    */
   addDep (dep: Dep) {
     const id = dep.id
@@ -141,6 +142,12 @@ export default class Watcher {
 
   /**
    * Clean up for dependency collection.
+   * 如果上次依赖的dep不存在这次的newDeps里面，那么说明已经被废弃了，需要删除
+   * 然后把newDepIds的值赋值给depIds，然后清空newDepIds
+   * 把newDeps的值赋值给deps，然后清空newDeps
+   * 结论:
+   *  newDepIds newDeps储存的是当次求值的Dep和id
+   *  depIds deps储存的是上次求值的Dep和id
    */
   cleanupDeps () {
     let i = this.deps.length
@@ -200,7 +207,12 @@ export default class Watcher {
       this.getAndInvoke(this.cb)
     }
   }
-
+  /**
+   * 在setter函数里重新赋值以后
+   * 说明页面展示的值应该有变化，
+   * 所以调用this.get(),也就是调用vm._update(vm._render(), hydrating)来重新生成DOM，
+   * 然后把新老值来传给cb,完成数据到页面上的数据同步
+   */
   getAndInvoke (cb: Function) {
     const value = this.get()
     if (

@@ -19,5 +19,4 @@ const vm = new Vue({
 }).$mount('#app')
 
 
-
-
+console.log(Vue.compile('<div id="demo">{{name}}</div>').render.toString());

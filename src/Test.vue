@@ -37,7 +37,6 @@
         console.log(this._a);
         console.log(this.$a);
         // this.obj.name1 = 1;
-        this.$set(this.$root, 'six', 11)
         console.log(this.arr);  
       }
     }

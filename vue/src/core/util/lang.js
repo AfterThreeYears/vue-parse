@@ -22,6 +22,8 @@ export function def (obj: Object, key: string, val: any, enumerable?: boolean) {
 
 /**
  * Parse simple path.
+ * 只能出现数字 字符 下划线 点 $符号，其他的都不能出现
+ * 然后读取值。触发getter
  */
 const bailRE = /[^\w.$]/
 export function parsePath (path: string): any {

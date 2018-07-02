@@ -1,13 +1,15 @@
 <template>
   <div id="app">
-    <div id="nav">
+    <pre id="nav">
       <!-- <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link> -->
-      abc
-      <main-header
+      name is {{name}}
+      name is {{name}}
+      c is {{c}}
+      <!-- <main-header
         :node-value="value"
-      />
-    </div>
+      /> -->
+    </pre>
     <!-- <router-view/> -->
   </div>
 </template>
@@ -20,10 +22,19 @@ import MainHeader from './Test.vue';
     data() {
       return {
         value: undefined,
+        name: 'shell',
+        c: 0,
       };
     },
     mounted() {
-      this.$set(this._data, 'value1', '666');
+      // this.$set(this._data, 'value1', '666');
+      this.$watch(function() {
+        this.c = this.name + 1;
+        return this.name;
+      }, function(newVal, oldVal) {
+        console.log(`newVal is ${newVal}, oldVal is ${oldVal}`);
+      });
+      this.name = 111;
     }
   }
 </script>

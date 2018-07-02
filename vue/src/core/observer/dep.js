@@ -18,7 +18,9 @@ export default class Dep {
     this.id = uid++
     this.subs = []
   }
-
+  /**
+   * 把经过Watcher去重的依赖进行收集
+   */
   addSub (sub: Watcher) {
     this.subs.push(sub)
   }
@@ -26,7 +28,9 @@ export default class Dep {
   removeSub (sub: Watcher) {
     remove(this.subs, sub)
   }
-
+  /**
+   * 调用当前的Watcher进行依赖重复检测
+   */
   depend () {
     if (Dep.target) {
       Dep.target.addDep(this)
