@@ -126,6 +126,7 @@ function callActivatedHooks (queue) {
  * Push a watcher into the watcher queue.
  * Jobs with duplicate IDs will be skipped unless it's
  * pushed when the queue is being flushed.
+ * 队列执行更新的过程中还会有观察者入队,所以需要用flushing属性来进行判断
  */
 export function queueWatcher (watcher: Watcher) {
   const id = watcher.id

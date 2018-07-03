@@ -27,6 +27,7 @@ import MainHeader from './Test.vue';
       };
     },
     mounted() {
+      throw new Error('666');
       // this.$set(this._data, 'value1', '666');
       this.$watch(function() {
         this.c = this.name + 1;
