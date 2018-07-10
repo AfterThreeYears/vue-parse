@@ -362,6 +362,12 @@ export function stateMixin (Vue: Class<Component>) {
   Vue.prototype.$set = set
   Vue.prototype.$delete = del
 
+  /**
+   * 参数不符合规范的话用createWatcher来序列化一遍，再来调用
+   * options.use 设置为true
+   * 如果是immediate等true的话 马上调用一遍cb
+   * 实例化Watcher
+   */
   Vue.prototype.$watch = function (
     expOrFn: string | Function,
     cb: any,

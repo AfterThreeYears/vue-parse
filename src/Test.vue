@@ -1,44 +1,37 @@
 <template>
-  <div @click="handleClick">
-    {{$root._data}}
-  </div>
+  <div style='min-height:100px;margin-bottom:20px;background-color:#eee;'>
+      <div v-for="(item, index) in arr1" :key="index">
+        {{item}}
+      </div>
+      <button @click="append">Try this</button>
+    </div>
 </template>
 
 <script>
   export default {
-    props: {
-      'node-value': {
-        type: String,
-        default: 'test',
-        required: true,
-      },
-    },
     data() {
       return {
-        a: 1,
-        _a: 2,
-        '$a': 3,
-        obj: {
-          name: 'wbb',
-        },
-        arr: [
-          {
-            a: 1
-          }
-        ],
+        arr1: [],
       };
     },
-    mounted() {
-      console.log('this is test', this);
+    props: {
+      arr: {
+        type: Array,
+        default: () => [],
+      }
     },
     methods: {
-      handleClick() {
-        console.log(this.a);
-        console.log(this._a);
-        console.log(this.$a);
-        // this.obj.name1 = 1;
-        console.log(this.arr);  
+      append: function(){
+        this.arr1.push( "Opps." );
       }
+    },
+    computed: {
+      empty: function(){
+        return this.arr1.length === 0;
+      }
+    },
+    mounted() {
+      this.arr1 = this.arr;
     }
   };
 </script>

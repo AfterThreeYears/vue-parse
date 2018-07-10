@@ -1,41 +1,50 @@
 <template>
   <div id="app">
-    <pre id="nav">
-      <!-- <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> -->
-      name is {{name}}
-      name is {{name}}
-      c is {{c}}
-      <!-- <main-header
-        :node-value="value"
-      /> -->
-    </pre>
+    <pre>
+      {{computedName}}
+			<!-- <my-test :arr="arr"></my-test> -->
+		</pre>
     <!-- <router-view/> -->
+    <button @click="handleAttr">add obj attr</button>
   </div>
 </template>
 <script>
 import MainHeader from './Test.vue';
   export default {
     components: {
-      MainHeader,
+      'my-test': MainHeader,
     },
     data() {
       return {
         value: undefined,
         name: 'shell',
         c: 0,
+        obj: {
+          a: 1,
+        },
+        arr: [ "Hey", "you", "there" ]
       };
     },
-    mounted() {
-      throw new Error('666');
-      // this.$set(this._data, 'value1', '666');
-      this.$watch(function() {
-        this.c = this.name + 1;
-        return this.name;
-      }, function(newVal, oldVal) {
-        console.log(`newVal is ${newVal}, oldVal is ${oldVal}`);
-      });
-      this.name = 111;
+    watch: {
+      obj: {
+        handler: function(newVal, oldVal) {
+          console.log(`newVal is ${newVal}, oldVal is ${oldVal}`);
+        },
+        deep: 1,
+      }
+    },
+    methods: {
+      handleAttr() {
+        this.obj.a = 666;
+        console.log(this.obj);
+      },
+    },
+    computed: {
+      computedName: {
+        get: function() {
+          return this.name + '66';
+        },
+      }
     }
   }
 </script>

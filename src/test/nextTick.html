@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <script>
+    let callbacks = [];
+    let pending = false;
+
+    function nextTick(cb, ctx) {
+      callbacks.push(() => {
+        try {
+          cb.call(ctx);
+        } catch (error) {
+          console.log(`nextTick error is ${error.messgae}`);
+        }
+      })
+
+      if (!pending) {
+        pending = true;
+
+        setTimeout(flushCallbacks, 0)
+      }
+    }
+
+    function flushCallbacks() {
+      pending = false;
+      const copies = callbacks.slice(0);
+      callbacks = [];
+
+      for (var i = 0; i < copies.length; i++) {
+        copies[i]();
+      }
+    }
+
+
+    nextTick(() => {
+      console.log(2);
+      window.a();
+    })
+    nextTick(() => {
+      console.log(3);
+    })
+    console.log(1);
+  </script>
+</body>
+
+</html>

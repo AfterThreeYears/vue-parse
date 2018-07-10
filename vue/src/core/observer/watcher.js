@@ -100,6 +100,8 @@ export default class Watcher {
 
   /**
    * Evaluate the getter, and re-collect dependencies.
+   * 执行getter，把当前的watcher扔到dep
+   * 然后更新dep数组
    */
   get () {
     pushTarget(this)
@@ -262,6 +264,10 @@ export default class Watcher {
 
   /**
    * Remove self from all dependencies' subscriber list.
+   * active设置为false
+   * 如果组件_isBeingDestroyed为false，说明组件还没被销毁
+   * 从vm._watchers里remove
+   * 在每一个deps里把这个Wathcer remove
    */
   teardown () {
     if (this.active) {

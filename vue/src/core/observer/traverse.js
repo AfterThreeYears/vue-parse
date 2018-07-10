@@ -16,6 +16,18 @@ export function traverse (val: any) {
   seenObjects.clear()
 }
 
+/**
+ * 首先判断是数组或者对象，并且不能被冻结或者是VNode的实例
+ * 根据是数组或者对象进行读取值，触发getter，进行依赖收集
+ * 避免循环引用造成的死循环的解决方案
+ * 例如
+ * var obj1 = {};
+ * var obj2 = {};
+ * obj1.data = obj2;
+ * obj2.data = obj1;
+ * 通过判断dep.id是否已经存在了，存在了就停止
+ */
+
 function _traverse (val: any, seen: SimpleSet) {
   let i, keys
   const isA = Array.isArray(val)
