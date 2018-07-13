@@ -8,6 +8,12 @@ import { isIOS, isNative } from './env'
 const callbacks = []
 let pending = false
 
+/**
+ * 重置pending，使下一个清空队列的任务能够插入
+ * 复制任务队列
+ * 清空任务队列
+ * 按照插入任务的先后顺序执行任务
+ */
 function flushCallbacks () {
   pending = false
   const copies = callbacks.slice(0)
@@ -34,6 +40,11 @@ let useMacroTask = false
 // in IE. The only polyfill that consistently queues the callback after all DOM
 // events triggered in the same loop is by using MessageChannel.
 /* istanbul ignore if */
+
+/**
+ * macroTask 顺序为setImmediate -> MessageChannel -> setTimeout
+ * mincoTask 有promise的情况使用promise，没有则替换为macroTask
+ */
 if (typeof setImmediate !== 'undefined' && isNative(setImmediate)) {
   macroTimerFunc = () => {
     setImmediate(flushCallbacks)
@@ -87,6 +98,10 @@ export function withMacroTask (fn: Function): Function {
   })
 }
 
+/**
+ * this.$nextTick中的ctx是当前组件的实例
+ * 把传入的cb放入一个函数，如果有用户cb使用用户的cb，否则使用promise的resolve
+ */
 export function nextTick (cb?: Function, ctx?: Object) {
   let _resolve
   callbacks.push(() => {

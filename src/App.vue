@@ -45,6 +45,15 @@ import MainHeader from './Test.vue';
           return this.name + '66';
         },
       }
+    },
+    mounted() {
+      this.name = 1;
+      this.$nextTick(function nextTick1() {
+        this.name = 2;
+        this.$nextTick(function nextTick2() {
+          console.log('第二个netxticke');
+        })
+      });
     }
   }
 </script>
