@@ -1,80 +1,45 @@
 <template>
   <div id="app">
-    <pre>
-      {{computedName}}
-			<!-- <my-test :arr="arr"></my-test> -->
-		</pre>
-    <!-- <router-view/> -->
-    <button @click="handleAttr">add obj attr</button>
+    <!-- , 1307, 130703 -->
+    {{ codes }}
+    <picker :tree="china" :codes="codes" @setCode="setCode" />
   </div>
 </template>
 <script>
-import MainHeader from './Test.vue';
-  export default {
-    components: {
-      'my-test': MainHeader,
-    },
-    data() {
-      return {
-        value: undefined,
-        name: 'shell',
-        c: 0,
-        obj: {
-          a: 1,
-        },
-        arr: [ "Hey", "you", "there" ]
-      };
-    },
-    watch: {
-      obj: {
-        handler: function(newVal, oldVal) {
-          console.log(`newVal is ${newVal}, oldVal is ${oldVal}`);
-        },
-        deep: 1,
-      }
-    },
-    methods: {
-      handleAttr() {
-        this.obj.a = 666;
-        console.log(this.obj);
+import Picker from './Picker.vue';
+import chinaMap from './chinaMap.json';
+import china from './china.json';
+
+export default {
+  components: {
+    Picker,
+  },
+  data() {
+    return {
+      info: {
+        name: 'abc',
+        age: 20,
       },
+      str: 'shell',
+      china,
+      codes: [13],
+    };
+  },
+  methods: {
+    setCode({ index, code }) {
+      console.log(index, code);
+      this.codes = this.codes.slice(0, index);
+      this.$set(this.codes, index, code);
     },
-    computed: {
-      computedName: {
-        get: function() {
-          return this.name + '66';
-        },
-      }
-    },
-    mounted() {
-      this.name = 1;
-      this.$nextTick(function nextTick1() {
-        this.name = 2;
-        this.$nextTick(function nextTick2() {
-          console.log('第二个netxticke');
-        })
-      });
-    }
-  }
+  },
+}
 </script>
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+* {
+  margin: 0;
+  padding: 0;
 }
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+ul, li {
+  list-style: none;
 }
 </style>

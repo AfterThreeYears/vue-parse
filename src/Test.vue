@@ -1,10 +1,7 @@
 <template>
   <div style='min-height:100px;margin-bottom:20px;background-color:#eee;'>
-      <div v-for="(item, index) in arr1" :key="index">
-        {{item}}
-      </div>
-      <button @click="append">Try this</button>
-    </div>
+    666
+  </div>
 </template>
 
 <script>
