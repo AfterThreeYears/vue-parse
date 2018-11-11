@@ -117,7 +117,7 @@ function copyAugment (target: Object, src: Object, keys: Array<string>) {
  * or the existing observer if the value already has one.
  * 如果这个对象已经有__ob__ 对象 并且 __ob__是Observer的实例那么直接返回这个观察者对象
  * 否则判断shouldObserve为true 不是服务端渲染 并且是数组或者原生对象 并且该对象或者数组可以扩展
- * 而且不是vue根实例, 那么创建一个新的观察者进行返回
+ * 那么创建一个新的观察者进行返回
  */
 export function observe (value: any, asRootData: ?boolean): Observer | void {
   if (!isObject(value) || value instanceof VNode) {
@@ -188,6 +188,7 @@ export function defineReactive (
       return value
     },
     set: function reactiveSetter (newVal) {
+      debugger;
       const value = getter ? getter.call(obj) : val
       /* eslint-disable no-self-compare */
       if (newVal === value || (newVal !== newVal && value !== value)) {

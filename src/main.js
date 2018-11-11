@@ -1,7 +1,7 @@
 import Vue from '../vue/dist/vue.esm.js'
 import App from './App.vue'
-import router from './router'
-import store from './store'
+// import router from './router'
+// import store from './store'
 
 Vue.config.productionTip = false
 Vue.config.performance = true
@@ -14,7 +14,7 @@ Vue.config.errorHandler = function (err, vm, info) {
 }
 
 const vm = new Vue({
-  store,
+  // store,
   render: h => h(App),
 }).$mount('#app')
 
